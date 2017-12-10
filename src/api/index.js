@@ -41,3 +41,5 @@ export const registration = ({ email, password }) =>
         ? Promise.reject(response)
         : response;
     });
+export const candles = (symbol, offset) =>
+  instance.get("/candles", { params: { symbol, offset } });

@@ -3,7 +3,9 @@ export {
   authLoginSuccess,
   authLoginFailure,
   authRegistrationRequest,
+  authRegistrationSuccess,
   authRegistrationFailure,
   authLogoutRequest,
+  authLogoutSuccess,
   authLogoutFailure,
 } from "./auth";

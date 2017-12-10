@@ -4,6 +4,7 @@ import {
   authLoginSuccess,
   authLoginFailure,
   authRegistrationRequest,
+  authRegistrationSuccess,
   authRegistrationFailure,
   authLogoutRequest,
   // authLogoutFailure,
@@ -25,15 +26,17 @@ export function* authFlow() {
     if (!isAuthorized) {
       if (localStorageToken) {
         token = localStorageToken;
-        yield put(authLoginSuccess());
       } else {
-        const action = yield take(authLoginSuccess);
+        const action = yield take([authLoginSuccess, authRegistrationSuccess]);
         token = action.payload;
       }
     }
 
     yield call(setTokenApi, token);
     yield call(setTokenToLocalStorage, token);
+
+    yield put(authLoginSuccess());
+
     yield take(authLogoutRequest);
     yield call(removeTokenFromLocalStorage);
     yield call(clearTokenApi);
@@ -55,7 +58,11 @@ export function* onAuthRequestsFlow(action) {
   }
   if (authRegistrationRequest.toString() === action.type) {
     try {
-      yield call(registration, action.payload);
+      const data = yield call(registration, action.payload),
+        token = data.data.jwt;
+      yield put(authRegistrationSuccess());
+      yield call(setTokenApi, token);
+      yield call(setTokenToLocalStorage, token);
     } catch (error) {
       yield put(authRegistrationFailure(error.data.message));
     }

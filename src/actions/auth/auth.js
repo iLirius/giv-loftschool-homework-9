@@ -9,9 +9,14 @@ export const {
     },
     registration: {
       request: authRegistrationRequest,
+      success: authRegistrationSuccess,
       failure: authRegistrationFailure,
     },
-    logout: { request: authLogoutRequest, failure: authLogoutFailure },
+    logout: {
+      request: authLogoutRequest,
+      success: authLogoutSuccess,
+      failure: authLogoutFailure,
+    },
   },
 } = createActions({
   AUTH: {
@@ -22,10 +27,12 @@ export const {
     },
     REGISTRATION: {
       REQUEST: [data => data, () => {}],
+      SUCCESS: [data => data, () => {}],
       FAILURE: undefined,
     },
     LOGOUT: {
       REQUEST: [data => data, () => {}],
+      SUCCESS: [data => data, () => {}],
       FAILURE: undefined,
     },
   },

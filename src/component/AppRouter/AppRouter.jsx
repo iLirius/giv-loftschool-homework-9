@@ -1,20 +1,29 @@
 import * as React from "react";
-import { Route, Switch, Redirect } from "react-router-dom";
+import { Route, Switch, Redirect, withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+
 import PrivateRoute from "../PrivateRoute";
 import LoginForm from "../LoginForm";
 import UserProfile from "../UserProfile";
+import Trade from "../Trade";
+import { getIsAuthorized } from "../../reducers/auth";
 
 class AppRouter extends React.Component {
   render() {
+    const { isAuthorized } = this.props;
     return (
-      <div className="App">
-        <Switch>
-          <Route path="/login" exact={true} component={LoginForm} />
-          <PrivateRoute path="/profile" component={UserProfile} />
-          <Redirect to="/login" />
-        </Switch>
-      </div>
+      <Switch>
+        <PrivateRoute path="/profile" component={UserProfile} />
+        <PrivateRoute path="/trade/" component={Trade} />
+        <PrivateRoute path="/trade/:name" component={Trade} />
+        {!isAuthorized && <Route path="/login" component={LoginForm} />}
+        <Redirect to="/profile" />
+      </Switch>
     );
   }
 }
-export default AppRouter;
+const mapStateToProps = state => ({
+  isAuthorized: getIsAuthorized(state),
+});
+
+export default withRouter(connect(mapStateToProps)(AppRouter));

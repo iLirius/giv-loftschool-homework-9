@@ -1,9 +1,9 @@
-import * as React from "react";
+import React, { PureComponent } from "react";
 import { Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { getIsAuthorized } from "../../reducers/auth";
 
-class PrivateRoute extends React.PureComponent {
+export class PrivateRoute extends PureComponent {
   render() {
     const { isAuthorized, component: Component, ...rest } = this.props;
 
@@ -17,7 +17,7 @@ class PrivateRoute extends React.PureComponent {
     );
   }
 }
-const mapStateToProps = state => ({
+
+export default connect(state => ({
   isAuthorized: getIsAuthorized(state),
-});
-export default connect(mapStateToProps)(PrivateRoute);
+}))(PrivateRoute);
