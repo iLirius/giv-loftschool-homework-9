@@ -4,11 +4,18 @@ axios.defaults.headers.post["Accept"] = "*/*";
 
 const instance = axios.create({
   baseURL: "http://lorem-ipsum.online/",
+  headers: {
+    "Content-Type": "application/json",
+    "X-Requested-With": "XMLHttpRequest",
+  },
 });
 
 const jsonInstance = axios.create({
   baseURL: "http://lorem-ipsum.online/",
-  headers: { "Content-Type": "application/json" },
+  headers: {
+    "Content-Type": "application/json",
+    "X-Requested-With": "XMLHttpRequest",
+  },
 });
 
 export const setTokenApi = accessToken => {
@@ -41,5 +48,6 @@ export const registration = ({ email, password }) =>
         ? Promise.reject(response)
         : response;
     });
+
 export const candles = (symbol, offset) =>
   instance.get("/candles", { params: { symbol, offset } });

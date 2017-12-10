@@ -7,6 +7,7 @@ import createStore from "./store";
 import AppRouter from "./component/AppRouter";
 import "./index.css";
 
+window.Chart = require("chart.js");
 const store = createStore({});
 
 ReactDOM.render(
