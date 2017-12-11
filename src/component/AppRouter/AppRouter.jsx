@@ -8,7 +8,7 @@ import UserProfile from "../UserProfile";
 import Trade from "../Trade";
 import { getIsAuthorized } from "../../reducers/auth";
 
-class AppRouter extends React.Component {
+export class AppRouter extends React.Component {
   render() {
     const { isAuthorized } = this.props;
     return (

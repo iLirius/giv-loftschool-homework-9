@@ -1,21 +1,16 @@
 import * as React from "react";
 import { connect } from "react-redux";
-import { Route, Redirect } from "react-router-dom";
 import { Button, Form, Segment } from "semantic-ui-react";
 import Particles from "react-particles-js";
 import particlesParams from "../../config/particles-params";
 
 import { authLoginRequest, authRegistrationRequest } from "../../actions/auth";
-import {
-  getLoginError,
-  getRegistationError,
-  getIsAuthorized,
-} from "../../reducers/auth";
+import { getLoginError, getRegistationError } from "../../reducers/auth";
 
 import Logo from "../../assets/img/Logo.svg";
 import "./LoginForm.css";
 
-class LoginForm extends React.PureComponent {
+export class LoginForm extends React.PureComponent {
   state = {
     email: { value: "", isError: false },
     password: { value: "", isError: false },
@@ -55,73 +50,60 @@ class LoginForm extends React.PureComponent {
   };
   render() {
     const { email, password, fromIsLogin } = this.state;
-    const { loginError, registationError, isAuthorized } = this.props;
+    const { loginError, registationError } = this.props;
 
     return (
       <div className="wraper">
-        {isAuthorized ? (
-          <Route>
-            <Redirect to="/profile" />
-          </Route>
-        ) : (
-          <React.Fragment>
-            <Particles params={particlesParams} className="particles" />
-
-            <div className="login-form">
-              <div className="login-form--header">
-                <img
-                  className="login-form--logo"
-                  src={Logo}
-                  alt="project logo"
-                />
+        <Particles params={particlesParams} className="particles" />
+        <div className="login-form">
+          <div className="login-form--header">
+            <img className="login-form--logo" src={Logo} alt="project logo" />
+          </div>
+          <Form>
+            <Segment raised>
+              <Form.Input
+                fluid
+                icon="user"
+                iconPosition="left"
+                placeholder="E-mail address"
+                onChange={this.handelChange}
+                error={email.isError}
+                value={email.value}
+                required
+                name="email"
+                type="email"
+              />
+              <Form.Input
+                fluid
+                icon="lock"
+                iconPosition="left"
+                placeholder="Password"
+                type="password"
+                name="password"
+                value={password.value}
+                onChange={this.handelChange}
+                required
+              />
+              <div className="login-form--errorMessage">
+                {loginError || (registationError && registationError.email)}
               </div>
-              <Form>
-                <Segment raised>
-                  <Form.Input
-                    fluid
-                    icon="user"
-                    iconPosition="left"
-                    placeholder="E-mail address"
-                    onChange={this.handelChange}
-                    error={email.isError}
-                    value={email.value}
-                    required
-                    name="email"
-                    type="email"
-                  />
-                  <Form.Input
-                    fluid
-                    icon="lock"
-                    iconPosition="left"
-                    placeholder="Password"
-                    type="password"
-                    name="password"
-                    value={password.value}
-                    onChange={this.handelChange}
-                    required
-                  />
-                  <div className="login-form--errorMessage">
-                    {loginError || (registationError && registationError.email)}
-                  </div>
-                  <Button
-                    color="teal"
-                    fluid
-                    className="login-form--btn-submit"
-                    onClick={this.handleSubmit}
-                  >
-                    {!fromIsLogin ? "Зарегистрироваться" : "Войти"}
-                  </Button>
-                </Segment>
-              </Form>
-              <Segment raised textAlign="center" size="large">
-                {fromIsLogin ? "Впервые на сайте?" : "Уже зарегистрированы?"}{" "}
-                <a href="" onClick={this.handleToggleForm}>
-                  {fromIsLogin ? "Регистрация" : "Войти"}
-                </a>
-              </Segment>
-            </div>
-          </React.Fragment>
-        )}
+              <Button
+                color="teal"
+                fluid
+                className="login-form--btn-submit"
+                onClick={this.handleSubmit}
+              >
+                {!fromIsLogin ? "Зарегистрироваться" : "Войти"}
+              </Button>
+            </Segment>
+          </Form>
+          <Segment raised textAlign="center" size="large">
+            {fromIsLogin ? "Впервые на сайте?" : "Уже зарегистрированы?"}{" "}
+            <a href="" onClick={this.handleToggleForm}>
+              {fromIsLogin ? "Регистрация" : "Войти"}
+            </a>
+          </Segment>
+        </div>
       </div>
     );
   }
@@ -130,7 +112,6 @@ class LoginForm extends React.PureComponent {
 const mapStateToProps = state => ({
   loginError: getLoginError(state),
   registationError: getRegistationError(state),
-  isAuthorized: getIsAuthorized(state),
 });
 
 const mapDispatchToProps = {

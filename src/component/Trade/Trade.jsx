@@ -154,14 +154,10 @@ class Trade extends React.PureComponent {
   getPurchaseSell = () => {
     const { selected } = this.props;
     const currency = this.props[selected];
-    let sell = {};
-    let purchase = {};
-    let x = 0;
-    for (let i = currency.length; i--; ) {
-      purchase[new Date(currency[i].mts)] = currency[i].purchase;
-      sell[new Date(currency[i].mts)] = currency[i].sell;
-    }
-    return { purchase, sell };
+    return {
+      purchase: currency.map(item => [new Date(item.mts), item.purchase]),
+      sell: currency.map(item => [new Date(item.mts), item.sell]),
+    };
   };
 
   getMinMax = () => {
