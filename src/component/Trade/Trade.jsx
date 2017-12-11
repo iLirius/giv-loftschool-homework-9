@@ -1,5 +1,10 @@
 import * as React from "react";
-import { Header as SemanticHeader } from "semantic-ui-react";
+import {
+  Header as SemanticHeader,
+  Loader,
+  Dimmer,
+  Segment,
+} from "semantic-ui-react";
 import styled from "styled-components";
 import { LineChart } from "react-chartkick";
 import { Link } from "react-router-dom";
@@ -168,20 +173,45 @@ class Trade extends React.PureComponent {
     return purchase;
   };
 
-  getMin = () => {
+  getMinMax = () => {
     const { selected } = this.props;
     const currency = this.props[selected];
-    return currency.length ? currency[currency.length - 1].sell : 0;
-  };
+    let sell = new Array(currency.length);
+    let purchase = new Array(currency.length);
+    let sellMin = 0,
+      purchaseMin = 0,
+      sellMax = 0,
+      purchaseMax = 0;
 
-  getMax = () => {
-    const { selected } = this.props;
-    const currency = this.props[selected];
-    return currency.length ? currency[0].sell : 0;
+    if (currency.length) {
+      for (let i = 0; i < currency.length; i++) {
+        sell[i] = currency[i].sell;
+        purchase[i] = currency[i].purchase;
+      }
+      sellMin = Math.min.apply(null, sell);
+      purchaseMin = Math.min.apply(null, purchase);
+      sellMax = Math.max.apply(null, sell);
+      purchaseMax = Math.max.apply(null, purchase);
+
+      return {
+        min: Math.ceil(purchaseMin < sellMin ? purchaseMin : sellMin) - 1,
+        max: Math.ceil(purchaseMax > sellMax ? purchaseMax : sellMax) + 1,
+      };
+    }
+    return { min: 0, max: 0 };
   };
 
   render() {
-    const { selected, offset, btc, eth } = this.props;
+    const {
+      selected,
+      offset,
+      btc,
+      eth,
+      isBtcLoading,
+      isEthLoading,
+    } = this.props;
+    const { min, max } = this.getMinMax();
+
     return (
       <React.Fragment>
         <Header>
@@ -237,18 +267,24 @@ class Trade extends React.PureComponent {
                 </OffsetButton>
               ))}
             </OffsetsSelector>
-            {
-              <LineChart
-                data={[
-                  { name: "Продажа", data: this.getSell() },
-                  { name: "Покупка", data: this.getPurchase() },
-                ]}
-                min={this.getMin()}
-                max={this.getMax()}
-                width={750}
-                height={400}
-              />
-            }
+            <Segment style={{ width: "780px", height: "420px" }}>
+              {!isBtcLoading && !isEthLoading && min > 0 ? (
+                <Dimmer active inverted>
+                  <Loader />
+                </Dimmer>
+              ) : (
+                <LineChart
+                  data={[
+                    { name: "Продажа", data: this.getSell() },
+                    { name: "Покупка", data: this.getPurchase() },
+                  ]}
+                  min={min}
+                  max={max}
+                  width={750}
+                  height={400}
+                />
+              )}
+            </Segment>
           </Contener>
         </Main>
         <Footer>
