@@ -131,7 +131,6 @@ class Trade extends React.PureComponent {
       selectEth();
     }
   }
-
   handleChangeOffset = event => {
     const { value } = event.target;
     const { selectOffset } = this.props;
@@ -152,25 +151,18 @@ class Trade extends React.PureComponent {
     return sell;
   };
 
-  getSell = () => {
+  getPurchaseSell = () => {
     const { selected } = this.props;
     const currency = this.props[selected];
     let sell = {};
-    for (let i = currency.length; i--; ) {
-      sell[i] = currency[i].sell;
-    }
-    return sell;
-  };
-
-  getPurchase = () => {
-    const { selected } = this.props;
-    const currency = this.props[selected];
     let purchase = {};
-    // return currency.length ? currency.map(x => x.purchase) : {};
+    let x = 0;
     for (let i = currency.length; i--; ) {
-      purchase[i] = currency[i].purchase;
+      purchase[x] = currency[i].purchase;
+      sell[x] = currency[i].sell;
+      x++;
     }
-    return purchase;
+    return { purchase, sell };
   };
 
   getMinMax = () => {
@@ -184,7 +176,7 @@ class Trade extends React.PureComponent {
       purchaseMax = 0;
 
     if (currency.length) {
-      for (let i = 0; i < currency.length; i++) {
+      for (let i = currency.length; i--; ) {
         sell[i] = currency[i].sell;
         purchase[i] = currency[i].purchase;
       }
@@ -211,6 +203,7 @@ class Trade extends React.PureComponent {
       isEthLoading,
     } = this.props;
     const { min, max } = this.getMinMax();
+    const { purchase, sell } = this.getPurchaseSell();
 
     return (
       <React.Fragment>
@@ -275,8 +268,8 @@ class Trade extends React.PureComponent {
               ) : (
                 <LineChart
                   data={[
-                    { name: "Продажа", data: this.getSell() },
-                    { name: "Покупка", data: this.getPurchase() },
+                    { name: "Продажа", data: sell },
+                    { name: "Покупка", data: purchase },
                   ]}
                   min={min}
                   max={max}
