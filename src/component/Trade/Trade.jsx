@@ -158,9 +158,8 @@ class Trade extends React.PureComponent {
     let purchase = {};
     let x = 0;
     for (let i = currency.length; i--; ) {
-      purchase[x] = currency[i].purchase;
-      sell[x] = currency[i].sell;
-      x++;
+      purchase[new Date(currency[i].mts)] = currency[i].purchase;
+      sell[new Date(currency[i].mts)] = currency[i].sell;
     }
     return { purchase, sell };
   };
@@ -168,29 +167,17 @@ class Trade extends React.PureComponent {
   getMinMax = () => {
     const { selected } = this.props;
     const currency = this.props[selected];
-    let sell = new Array(currency.length);
-    let purchase = new Array(currency.length);
-    let sellMin = 0,
-      purchaseMin = 0,
-      sellMax = 0,
-      purchaseMax = 0;
 
-    if (currency.length) {
-      for (let i = currency.length; i--; ) {
-        sell[i] = currency[i].sell;
-        purchase[i] = currency[i].purchase;
-      }
-      sellMin = Math.min.apply(null, sell);
-      purchaseMin = Math.min.apply(null, purchase);
-      sellMax = Math.max.apply(null, sell);
-      purchaseMax = Math.max.apply(null, purchase);
-
-      return {
-        min: Math.ceil(purchaseMin < sellMin ? purchaseMin : sellMin) - 1,
-        max: Math.ceil(purchaseMax > sellMax ? purchaseMax : sellMax) + 1,
-      };
-    }
-    return { min: 0, max: 0 };
+    return {
+      min: currency.reduce(
+        (acc, { sell, purchase }) => Math.min(acc, sell, purchase),
+        Number.MAX_SAFE_INTEGER,
+      ),
+      max: currency.reduce(
+        (acc, { sell, purchase }) => Math.max(acc, sell, purchase),
+        0,
+      ),
+    };
   };
 
   render() {
