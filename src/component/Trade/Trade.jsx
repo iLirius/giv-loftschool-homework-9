@@ -1,26 +1,17 @@
 import * as React from "react";
-import {
-  Header as SemanticHeader,
-  Loader,
-  Dimmer,
-  Segment,
-} from "semantic-ui-react";
 import styled from "styled-components";
-import { LineChart } from "react-chartkick";
+
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
 import LogoWhite from "../../assets/img/Logo-white.svg";
-import {
-  getIsBtcLoading,
-  getIsEthLoading,
-  getOffset,
-  getSelected,
-  getBtcData,
-  getEthData,
-} from "../../reducers/currency";
+import { getSelected, getBtcData, getEthData } from "../../reducers/currency";
 
-import { selectBtc, selectEth, selectOffset } from "../../actions/currency";
+import { selectBtc, selectEth } from "../../actions/currency";
+
+import Operations from "./Operations";
+import Wallet from "./Wallet";
+import Chart from "./Chart";
 
 const Header = styled.header`
   display: flex;
@@ -34,10 +25,18 @@ const Header = styled.header`
 
 const Main = styled.main`
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: row;
+  // align-items: center;
+  align-content: space-between;
   width: 100%;
   flex-grow: 1;
+  margin: 0 auto;
+  padding: 25px 0 7px;
+  width: 100%;
+  max-width: 1200px;
+`;
+const OperationsWallet = styled.div`
+  flex: 1 1 auto;
 `;
 
 const Footer = styled.footer`
@@ -109,21 +108,6 @@ const User = styled.div`
   font-weight: 600;
 `;
 
-const OffsetsSelector = styled.div`
-  margin-bottom: 12px;
-`;
-
-const OffsetButton = styled.button`
-  border: 1px solid green;
-  margin: 0 4px;
-  background-color: ${props => props.bg};
-  color: ${props => props.colors};
-  padding: 2px 16px;
-  cursor: pointer;
-`;
-
-const offsets = { "2h": "2ч", "4h": "4ч", "8h": "8ч", "1d": "1д", "7d": "7д" };
-
 class Trade extends React.PureComponent {
   componentDidMount() {
     const { location, selectEth } = this.props;
@@ -131,11 +115,7 @@ class Trade extends React.PureComponent {
       selectEth();
     }
   }
-  handleChangeOffset = event => {
-    const { value } = event.target;
-    const { selectOffset } = this.props;
-    selectOffset(value);
-  };
+
   handleChangeCurrency = () => {
     const { selected, selectEth, selectBtc } = this.props;
     selected !== "btc" ? selectBtc() : selectEth();
@@ -151,42 +131,8 @@ class Trade extends React.PureComponent {
     return sell;
   };
 
-  getPurchaseSell = () => {
-    const { selected } = this.props;
-    const currency = this.props[selected];
-    return {
-      purchase: currency.map(item => [new Date(item.mts), item.purchase]),
-      sell: currency.map(item => [new Date(item.mts), item.sell]),
-    };
-  };
-
-  getMinMax = () => {
-    const { selected } = this.props;
-    const currency = this.props[selected];
-
-    return {
-      min: currency.reduce(
-        (acc, { sell, purchase }) => Math.min(acc, sell, purchase),
-        Number.MAX_SAFE_INTEGER,
-      ),
-      max: currency.reduce(
-        (acc, { sell, purchase }) => Math.max(acc, sell, purchase),
-        0,
-      ),
-    };
-  };
-
   render() {
-    const {
-      selected,
-      offset,
-      btc,
-      eth,
-      isBtcLoading,
-      isEthLoading,
-    } = this.props;
-    const { min, max } = this.getMinMax();
-    const { purchase, sell } = this.getPurchaseSell();
+    const { selected, btc, eth } = this.props;
 
     return (
       <React.Fragment>
@@ -227,41 +173,13 @@ class Trade extends React.PureComponent {
           </Wraper>
         </Header>
         <Main>
-          <Contener>
-            <SemanticHeader as="h1">Окно графика</SemanticHeader>
-            <OffsetsSelector>
-              {Object.keys(offsets).map((keyName, index) => (
-                <OffsetButton
-                  key={keyName}
-                  type="button"
-                  value={keyName}
-                  onClick={this.handleChangeOffset}
-                  bg={offset !== keyName ? "green" : "white"}
-                  colors={offset !== keyName ? "white" : "green"}
-                >
-                  {offsets[keyName]}
-                </OffsetButton>
-              ))}
-            </OffsetsSelector>
-            <Segment style={{ width: "780px", height: "420px" }}>
-              {!isBtcLoading && !isEthLoading && min > 0 ? (
-                <Dimmer active inverted>
-                  <Loader />
-                </Dimmer>
-              ) : (
-                <LineChart
-                  data={[
-                    { name: "Продажа", data: sell },
-                    { name: "Покупка", data: purchase },
-                  ]}
-                  min={min}
-                  max={max}
-                  width={750}
-                  height={400}
-                />
-              )}
-            </Segment>
-          </Contener>
+          <OperationsWallet>
+            <Wallet />
+            <Operations />
+          </OperationsWallet>
+          <div>
+            <Chart />
+          </div>
         </Main>
         <Footer>
           <Contener>2Footer2</Contener>
@@ -271,15 +189,12 @@ class Trade extends React.PureComponent {
   }
 }
 const mapStateToProps = state => ({
-  isBtcLoading: getIsBtcLoading(state),
-  isEthLoading: getIsEthLoading(state),
-  offset: getOffset(state),
   selected: getSelected(state),
   btc: getBtcData(state),
   eth: getEthData(state),
 });
 
-const mapDispatchToProps = { selectBtc, selectEth, selectOffset };
+const mapDispatchToProps = { selectBtc, selectEth };
 
 // export default Trade;
 export default connect(mapStateToProps, mapDispatchToProps)(Trade);

@@ -10,6 +10,8 @@ import {
   fetchCurrencyEthRequest,
   fetchCurrencyEthSuccess,
   selectOffset,
+  buyCurrencyRequest,
+  sellCurrencyRequest,
 } from "../../actions/currency";
 
 const selected = handleActions(
@@ -59,6 +61,18 @@ export const getOffset = state => state.currency.offset;
 export const getSelected = state => state.currency.selected;
 export const getBtcData = state => state.currency.btc;
 export const getEthData = state => state.currency.eth;
+
+export const getCurrentBtcPurchase = state =>
+  state.currency.btc[0] ? state.currency.btc[0].purchase : 0;
+
+export const getCurrentEthPurchase = state =>
+  state.currency.eth[0] ? state.currency.eth[0].purchase : 0;
+
+export const getCurrentBtcSell = state =>
+  state.currency.btc[0] ? state.currency.btc[0].sell : 0;
+
+export const getCurrentEthSell = state =>
+  state.currency.eth[0] ? state.currency.eth[0].sell : 0;
 
 export default combineReducers({
   selected,

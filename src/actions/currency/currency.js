@@ -15,6 +15,16 @@ export const {
       },
     },
     select: { btc: selectBtc, eth: selectEth, offset: selectOffset },
+    buy: {
+      failure: buyCurrencyFailure,
+      request: buyCurrencyRequest,
+      success: buyCurrencySuccess,
+    },
+    sell: {
+      failure: sellCurrencyFailure,
+      request: sellCurrencyRequest,
+      success: sellCurrencySuccess,
+    },
   },
 } = createActions({
   CURRENCY: {
@@ -34,6 +44,16 @@ export const {
       BTC: undefined,
       ETH: undefined,
       OFFSET: undefined,
+    },
+    BUY: {
+      FAILURE: undefined,
+      REQUEST: undefined,
+      SUCCESS: undefined,
+    },
+    SELL: {
+      FAILURE: undefined,
+      REQUEST: undefined,
+      SUCCESS: undefined,
     },
   },
 });

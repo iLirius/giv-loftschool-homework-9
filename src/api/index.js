@@ -18,8 +18,8 @@ const jsonInstance = axios.create({
   },
 });
 
-export const setTokenApi = accessToken => {
-  instance.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
+export const setTokenApi = access_token => {
+  instance.defaults.headers.common["Authorization"] = `Bearer ${access_token}`;
 };
 
 export const clearTokenApi = () => {
@@ -28,26 +28,43 @@ export const clearTokenApi = () => {
 
 export const login = ({ email, password }) =>
   jsonInstance
-    .post("/user_token", {
-      auth: {
-        email,
-        password,
-      },
-    })
+    .post("/user_token", { auth: { email, password } })
     .then(response => {
-      return response.data.result === "error"
-        ? Promise.reject(response)
-        : response;
+      if (response.data.result === "error") return Promise.reject(response);
+      return response;
     });
 
 export const registration = ({ email, password }) =>
   instance
     .post("/users", `email=${email}&password=${password}`)
     .then(response => {
-      return response.data.result === "error"
-        ? Promise.reject(response)
-        : response;
+      if (response.data.result === "error") return Promise.reject(response);
+      return response;
     });
 
 export const candles = (symbol, offset) =>
   instance.get("/candles", { params: { symbol, offset } });
+
+export const getWallet = () => instance.get("/users/wallet");
+
+export const getUserInfo = () => instance.get("/users/me");
+
+export const buyCurrency = (currency, value) =>
+  instance
+    .get(`stock/exchange?symbol=${currency}&operation=purchase&sum=${value}`)
+    .then(
+      response =>
+        response.data.result === "error"
+          ? Promise.reject(response.data.message)
+          : response,
+    );
+
+export const sellCurrency = (currency, value) =>
+  instance
+    .get(`stock/exchange?symbol=${currency}&operation=sell&sum=${value}`)
+    .then(
+      response =>
+        response.data.result === "error"
+          ? Promise.reject(response.data.message)
+          : response,
+    );

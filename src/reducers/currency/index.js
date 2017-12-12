@@ -6,4 +6,8 @@ export {
   getSelected,
   getBtcData,
   getEthData,
+  getCurrentBtcSell,
+  getCurrentEthSell,
+  getCurrentBtcPurchase,
+  getCurrentEthPurchase,
 } from "./currency";
