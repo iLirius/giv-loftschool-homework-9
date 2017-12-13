@@ -1,10 +1,44 @@
-import { compose, withHandlers, mapProps, pure } from "recompose";
+import {
+  compose,
+  /*withHandlers,*/ mapProps,
+  lifecycle,
+  pure,
+} from "recompose";
 import { connect } from "react-redux";
-import { Header, Loader, Dimmer, Segment } from "semantic-ui-react";
+import { Header } from "semantic-ui-react";
 import * as React from "react";
 import styled from "styled-components";
 
-const enhance = compose();
+import {
+  getCoinsUsd,
+  getCoinsBtc,
+  getCoinsEth,
+} from "../../../reducers/wallet";
+
+const enhance = compose(
+  connect(
+    state => ({
+      usd: getCoinsUsd(state),
+      btc: getCoinsBtc(state),
+      eth: getCoinsEth(state),
+    }),
+    {
+      /*fetchWalletRequest*/
+    },
+  ),
+  mapProps(({ usd, btc, eth /*, fetchWalletRequest*/ }) => ({
+    usd,
+    btc,
+    eth,
+    // fetchWalletRequest,
+  })),
+  lifecycle({
+    componentDidMount() {
+      // fetchWalletRequest();
+    },
+  }),
+  pure,
+);
 
 const Wraper = styled.div`
   display: flex;
@@ -41,28 +75,28 @@ const FractionalPart = styled.span`
   text-overflow: ellipsis;
   overflow: hidden;
 `;
-const Wallet = ({}) => {
+const Wallet = ({ usd, btc, eth }) => {
   return (
     <div>
       <Header as="h2">Ваш счет</Header>
       <Wraper>
         <Budget>
-          <WholePart>11000</WholePart>.
-          <FractionalPart>12</FractionalPart>
+          <WholePart>{usd[0]}</WholePart>.
+          <FractionalPart>{usd[1] ? usd[1] : 0}</FractionalPart>
         </Budget>
         <CurrencySymbol>$</CurrencySymbol>
       </Wraper>
       <Wraper>
         <Budget>
-          <WholePart>11000</WholePart>.
-          <FractionalPart>12</FractionalPart>
+          <WholePart>{btc[0]}</WholePart>.
+          <FractionalPart>{btc[1] ? btc[1] : 0}</FractionalPart>
         </Budget>
         <CurrencySymbol>BTC</CurrencySymbol>
       </Wraper>
       <Wraper>
         <Budget>
-          <WholePart>11000</WholePart>.
-          <FractionalPart>12</FractionalPart>
+          <WholePart>{eth[0]}</WholePart>.
+          <FractionalPart>{eth[1] ? eth[1] : 0}</FractionalPart>
         </Budget>
         <CurrencySymbol>ETH</CurrencySymbol>
       </Wraper>

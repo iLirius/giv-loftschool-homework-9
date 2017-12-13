@@ -1,1 +1,7 @@
-export { default, getError } from "./wallet";
+export {
+  default,
+  getError,
+  getCoinsUsd,
+  getCoinsBtc,
+  getCoinsEth,
+} from "./wallet";

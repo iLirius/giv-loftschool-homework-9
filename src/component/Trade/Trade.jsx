@@ -5,9 +5,15 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
 import LogoWhite from "../../assets/img/Logo-white.svg";
-import { getSelected, getBtcData, getEthData } from "../../reducers/currency";
+import {
+  getSelected,
+  getCurrentBtcSell,
+  getCurrentEthSell,
+} from "../../reducers/currency";
 
 import { selectBtc, selectEth } from "../../actions/currency";
+
+import { fetchWalletRequest } from "../../actions/wallet";
 
 import Operations from "./Operations";
 import Wallet from "./Wallet";
@@ -110,8 +116,9 @@ const User = styled.div`
 
 class Trade extends React.PureComponent {
   componentDidMount() {
-    const { location, selectEth } = this.props;
-    if (location.pathname === "/trade/eth") {
+    const { location, selectEth, fetchWalletRequest } = this.props;
+    fetchWalletRequest();
+    if (location.pathname.includes("eth")) {
       selectEth();
     }
   }
@@ -120,19 +127,9 @@ class Trade extends React.PureComponent {
     const { selected, selectEth, selectBtc } = this.props;
     selected !== "btc" ? selectBtc() : selectEth();
   };
-  /**
-   * @param [array] currency
-   */
-  getCurrency = currency => {
-    let sell = 0;
-    if (currency.length) {
-      sell = currency.slice(0, 1)[0].sell;
-    }
-    return sell;
-  };
 
   render() {
-    const { selected, btc, eth } = this.props;
+    const { selected, sellBtc, sellEth } = this.props;
 
     return (
       <React.Fragment>
@@ -144,26 +141,26 @@ class Trade extends React.PureComponent {
             <CryptoCurrencySelector>
               {selected === "btc" ? (
                 <CryptoCurrencyActive>
-                  {this.getCurrency(btc)}
+                  {sellBtc}
                   <b>1 BTC</b>
                 </CryptoCurrencyActive>
               ) : (
                 <Link to="/trade/btc" onClick={this.handleChangeCurrency}>
                   <CryptoCurrencyDisable>
-                    {this.getCurrency(btc)}
+                    {sellBtc}
                     <b>1 BTC</b>
                   </CryptoCurrencyDisable>
                 </Link>
               )}
               {selected === "eth" ? (
                 <CryptoCurrencyActive>
-                  {this.getCurrency(eth)}
+                  {sellEth}
                   <b>1 ETH</b>
                 </CryptoCurrencyActive>
               ) : (
                 <Link to="/trade/eth" onClick={this.handleChangeCurrency}>
                   <CryptoCurrencyDisable>
-                    {this.getCurrency(eth)}
+                    {sellEth}
                     <b>1 ETH</b>
                   </CryptoCurrencyDisable>
                 </Link>
@@ -190,11 +187,11 @@ class Trade extends React.PureComponent {
 }
 const mapStateToProps = state => ({
   selected: getSelected(state),
-  btc: getBtcData(state),
-  eth: getEthData(state),
+  sellBtc: getCurrentBtcSell(state),
+  sellEth: getCurrentEthSell(state),
 });
 
-const mapDispatchToProps = { selectBtc, selectEth };
+const mapDispatchToProps = { selectBtc, selectEth, fetchWalletRequest };
 
 // export default Trade;
 export default connect(mapStateToProps, mapDispatchToProps)(Trade);
