@@ -20,8 +20,14 @@ import {
   fetchCurrencyEthFailure,
   fetchCurrencyEthSuccess,
   selectOffset,
+  buyCurrencyFailure,
+  buyCurrencyRequest,
+  buyCurrencySuccess,
+  sellCurrencyFailure,
+  sellCurrencyRequest,
+  sellCurrencySuccess,
 } from "../../actions/currency";
-import { candles } from "../../api";
+import { candles, sellCurrency, buyCurrency } from "../../api";
 
 function* fetchCurrencyFlow() {
   while (true) {
@@ -71,6 +77,40 @@ function* fetchEthFlow(action) {
   } catch (error) {
     yield put(fetchCurrencyEthFailure(error));
   }
+}
+
+function* sellCurrencyFlow(action) {
+  try {
+    const response = yield call(
+      sellCurrency,
+      action.payload.currencyName,
+      action.payload.value,
+    );
+    yield put(sellCurrencySuccess(response.data));
+  } catch (error) {
+    yield put(sellCurrencyFailure(error));
+  }
+}
+
+function* buyCurrencyFlow(action) {
+  try {
+    const response = yield call(
+      buyCurrency,
+      action.payload.currencyName,
+      action.payload.value,
+    );
+    yield put(buyCurrencySuccess(response.data));
+  } catch (error) {
+    yield put(buyCurrencyFailure(error));
+  }
+}
+
+export function* buyCurrencyWatch() {
+  yield takeLatest(buyCurrencyRequest, buyCurrencyFlow);
+}
+
+export function* sellCurrencyWatch() {
+  yield takeLatest(sellCurrencyRequest, sellCurrencyFlow);
 }
 
 export function* fetchBtcWatch() {

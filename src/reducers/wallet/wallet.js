@@ -1,12 +1,27 @@
 import { combineReducers } from "redux";
-import { handleAction, handleActions } from "redux-actions";
+import { handleActions } from "redux-actions";
 import {
   fetchWalletFailure,
   fetchWalletRequest,
   fetchWalletSuccess,
 } from "../../actions/wallet";
+import {
+  buyCurrencySuccess,
+  sellCurrencySuccess,
+  buyCurrencyFailure,
+  sellCurrencyFailure,
+} from "../../actions/currency";
 
-const error = handleAction(fetchWalletFailure, (state, action) => {}, false);
+export const error = handleActions(
+  {
+    [fetchWalletRequest]: () => null,
+    [fetchWalletSuccess]: () => null,
+    [fetchWalletFailure]: (state, action) => action.payload,
+    [buyCurrencyFailure]: (state, action) => action.payload,
+    [sellCurrencyFailure]: (state, action) => action.payload,
+  },
+  null,
+);
 
 const isLoading = handleActions(
   {
@@ -16,14 +31,30 @@ const isLoading = handleActions(
   },
   false,
 );
-const coins = handleAction(
-  fetchWalletSuccess,
-  (state, action) => ({ ...state, ...action.payload }),
+
+const btc = handleActions(
   {
-    usd: 0,
-    btc: 0,
-    eth: 0,
+    [fetchWalletSuccess]: (state, action) => action.payload.btc,
+    [buyCurrencySuccess]: (state, action) => action.payload.btc,
+    [sellCurrencySuccess]: (state, action) => action.payload.btc,
   },
+  0,
+);
+const eth = handleActions(
+  {
+    [fetchWalletSuccess]: (state, action) => action.payload.eth,
+    [buyCurrencySuccess]: (state, action) => action.payload.eth,
+    [sellCurrencySuccess]: (state, action) => action.payload.eth,
+  },
+  0,
+);
+const usd = handleActions(
+  {
+    [fetchWalletSuccess]: (state, action) => action.payload.usd,
+    [buyCurrencySuccess]: (state, action) => action.payload.usd,
+    [sellCurrencySuccess]: (state, action) => action.payload.usd,
+  },
+  0,
 );
 
 export const getError = state => state.wallet.error;
@@ -34,4 +65,5 @@ export const getCoinsBtc = state =>
 export const getCoinsEth = state =>
   state.wallet.coins.eth.toString().split(".");
 
+const coins = combineReducers({ btc, eth, usd });
 export default combineReducers({ error, isLoading, coins });

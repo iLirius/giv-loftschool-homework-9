@@ -1,1 +1,7 @@
-export { currencyWatch, fetchBtcWatch, fetchEthWatch } from "./currency";
+export {
+  currencyWatch,
+  fetchBtcWatch,
+  fetchEthWatch,
+  buyCurrencyWatch,
+  sellCurrencyWatch,
+} from "./currency";

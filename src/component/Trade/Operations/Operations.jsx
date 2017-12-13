@@ -193,7 +193,6 @@ class TradeOperations extends PureComponent {
   render() {
     const { error, currencyName } = this.props;
     const { inputFiat, inputSell, inputPurchase } = this.state;
-
     return (
       <Container>
         <h2>Покупка/продажа</h2>

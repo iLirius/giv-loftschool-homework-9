@@ -10,8 +10,6 @@ import {
   fetchCurrencyEthRequest,
   fetchCurrencyEthSuccess,
   selectOffset,
-  buyCurrencyRequest,
-  sellCurrencyRequest,
 } from "../../actions/currency";
 
 const selected = handleActions(
