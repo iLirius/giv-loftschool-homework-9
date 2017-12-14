@@ -1,6 +1,6 @@
 import { createActions } from "redux-actions";
 
-export const {
+const {
   currency: {
     fetch: {
       btc: {
@@ -57,3 +57,21 @@ export const {
     },
   },
 });
+
+export {
+  fetchCurrencyBtcFailure,
+  fetchCurrencyBtcRequest,
+  fetchCurrencyBtcSuccess,
+  fetchCurrencyEthFailure,
+  fetchCurrencyEthRequest,
+  fetchCurrencyEthSuccess,
+  selectBtc,
+  selectEth,
+  selectOffset,
+  buyCurrencyFailure,
+  buyCurrencyRequest,
+  buyCurrencySuccess,
+  sellCurrencyFailure,
+  sellCurrencyRequest,
+  sellCurrencySuccess,
+};

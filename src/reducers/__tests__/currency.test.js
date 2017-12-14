@@ -2,71 +2,78 @@ import currency from "../currency";
 import {
   selectBtc,
   selectEth,
-  fetchBtcRequest,
-  fetchEthRequest,
-  fetchBtcSuccess,
-  fetchBtcFailure,
-  fetchEthFailure,
-  fetchEthSuccess,
-  selectOffset
+  fetchCurrencyBtcRequest,
+  fetchCurrencyEthRequest,
+  fetchCurrencyBtcSuccess,
+  fetchCurrencyBtcFailure,
+  fetchCurrencyEthFailure,
+  fetchCurrencyEthSuccess,
+  selectOffset,
 } from "../../actions/currency";
 
 describe("In currency reducer", () => {
   describe("action selectBtc", () => {
-    it('change selected field to "btc"', () => {
+    it("change selected field to \"btc\"", () => {
       const next = currency({ selected: "eth" }, selectBtc());
       expect(next.selected).toEqual("btc");
     });
   });
   describe("action selectEth", () => {
-    it('change selected field to "eth"', () => {
+    it("change selected field to \"eth\"", () => {
       const next = currency({ selected: "btc" }, selectEth());
       expect(next.selected).toEqual("eth");
     });
   });
-  describe("action fetchBtcRequest", () => {
+  describe("action fetchCurrencyBtcRequest", () => {
     it("change isBtcLoading from false to true", () => {
-      const next = currency({ isBtcLoading: false }, fetchBtcRequest());
+      const next = currency({ isBtcLoading: false }, fetchCurrencyBtcRequest());
       expect(next.isBtcLoading).toBeTruthy;
     });
   });
-  describe("action fetchEthRequest", () => {
+  describe("action fetchCurrencyEthRequest", () => {
     it("change isEthLoading from false to true", () => {
-      const next = currency({ isEthLoading: false }, fetchEthRequest());
+      const next = currency({ isEthLoading: false }, fetchCurrencyEthRequest());
       expect(next.isEthLoading).toBeTruthy;
     });
   });
-  describe("action fetchBtcSuccess", () => {
+
+  describe("action fetchCurrencyBtcSuccess", () => {
     const payload = [1, 2, 3];
     it("change isBtcLoading from true to false", () => {
-      const next = currency({ isBtcLoading: true }, fetchBtcSuccess(payload));
+      const next = currency(
+        { isBtcLoading: true },
+        fetchCurrencyBtcSuccess(payload),
+      );
       expect(next.isBtcLoading).toBeFalsy;
     });
     it("fill with data btc field", () => {
-      const next = currency({ btc: [] }, fetchBtcSuccess(payload));
+      const next = currency({ btc: [] }, fetchCurrencyBtcSuccess(payload));
       expect(next.btc).toEqual(payload);
     });
   });
-  describe("action fetchEthSuccess", () => {
+  describe("action fetchCurrencyEthSuccess", () => {
     const payload = [1, 2, 3];
     it("change isEthLoading from true to false", () => {
-      const next = currency({ isEthLoading: true }, fetchEthSuccess(payload));
+      const next = currency(
+        { isEthLoading: true },
+        fetchCurrencyEthSuccess(payload),
+      );
       expect(next.isEthLoading).toBeFalsy;
     });
     it("fill with data eth field", () => {
-      const next = currency({ eth: [] }, fetchEthSuccess(payload));
+      const next = currency({ eth: [] }, fetchCurrencyEthSuccess(payload));
       expect(next.eth).toEqual(payload);
     });
   });
-  describe("action fetchBtcFailure", () => {
+  describe("action fetchCurrencyBtcFailure", () => {
     it("change isBtcLoading from true to false", () => {
-      const next = currency({ isBtcLoading: true }, fetchBtcFailure());
+      const next = currency({ isBtcLoading: true }, fetchCurrencyBtcFailure());
       expect(next.isBtcLoading).toBeFalsy;
     });
   });
-  describe("action fetchEthFailure", () => {
+  describe("action fetchCurrencyEthFailure", () => {
     it("change isEthLoading from true to false", () => {
-      const next = currency({ isEthLoading: true }, fetchEthFailure());
+      const next = currency({ isEthLoading: true }, fetchCurrencyEthFailure());
       expect(next.isEthLoading).toBeFalsy;
     });
   });

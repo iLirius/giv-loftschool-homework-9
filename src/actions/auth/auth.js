@@ -1,6 +1,6 @@
 import { createActions } from "redux-actions";
 
-export const {
+const {
   auth: {
     login: {
       request: authLoginRequest,
@@ -37,3 +37,15 @@ export const {
     },
   },
 });
+
+export {
+  authLoginRequest,
+  authLoginSuccess,
+  authLoginFailure,
+  authRegistrationRequest,
+  authRegistrationSuccess,
+  authRegistrationFailure,
+  authLogoutRequest,
+  authLogoutSuccess,
+  authLogoutFailure,
+};

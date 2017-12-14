@@ -1,6 +1,6 @@
 import { createActions } from "redux-actions";
 
-export const {
+const {
   wallet: { fetchWalletFailure, fetchWalletRequest, fetchWalletSuccess },
 } = createActions({
   WALLET: {
@@ -9,3 +9,5 @@ export const {
     FETCH_WALLET_SUCCESS: undefined,
   },
 });
+
+export { fetchWalletFailure, fetchWalletRequest, fetchWalletSuccess };

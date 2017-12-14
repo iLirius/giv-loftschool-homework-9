@@ -2,13 +2,13 @@ import wallet from "../wallet";
 import {
   fetchWalletRequest,
   fetchWalletSuccess,
-  fetchWalletFailure
+  fetchWalletFailure,
 } from "../../actions/wallet";
 import {
   buyCurrencySuccess,
   sellCurrencySuccess,
   buyCurrencyFailure,
-  sellCurrencyFailure
+  sellCurrencyFailure,
 } from "../../actions/currency";
 
 describe("In wallet reducer", () => {
@@ -28,9 +28,9 @@ describe("In wallet reducer", () => {
         result: {
           btc: 12,
           eth: 0.5,
-          usd: 10000
-        }
-      }
+          usd: 10000,
+        },
+      },
     };
     it("change isLoading from true to false", () => {
       const next = wallet({ isLoading: true }, fetchWalletSuccess(payload));
@@ -41,15 +41,24 @@ describe("In wallet reducer", () => {
       expect(next.isLoading).toBeNull;
     });
     it("fill with data coins.btc filed", () => {
-      const next = wallet({ coins: { btc: 0 } }, fetchWalletSuccess(payload));
+      const next = wallet(
+        { coins: { btc: 0 } },
+        fetchWalletSuccess(payload.data.result),
+      );
       expect(next.coins.btc).toEqual(payload.data.result.btc);
     });
     it("fill with data coins.eth filed", () => {
-      const next = wallet({ coins: { eth: 0 } }, fetchWalletSuccess(payload));
+      const next = wallet(
+        { coins: { eth: 0 } },
+        fetchWalletSuccess(payload.data.result),
+      );
       expect(next.coins.eth).toEqual(payload.data.result.eth);
     });
     it("fill with data coins.usd filed", () => {
-      const next = wallet({ coins: { usd: 0 } }, fetchWalletSuccess(payload));
+      const next = wallet(
+        { coins: { usd: 0 } },
+        fetchWalletSuccess(payload.data.result),
+      );
       expect(next.coins.usd).toEqual(payload.data.result.usd);
     });
   });
@@ -69,19 +78,28 @@ describe("In wallet reducer", () => {
       data: {
         btc: 12,
         eth: 0.5,
-        usd: 10000
-      }
+        usd: 10000,
+      },
     };
     it("fill with data coins.btc filed", () => {
-      const next = wallet({ coins: { btc: 0 } }, buyCurrencySuccess(payload));
+      const next = wallet(
+        { coins: { btc: 0 } },
+        buyCurrencySuccess(payload.data),
+      );
       expect(next.coins.btc).toEqual(payload.data.btc);
     });
     it("fill with data coins.eth filed", () => {
-      const next = wallet({ coins: { eth: 0 } }, buyCurrencySuccess(payload));
+      const next = wallet(
+        { coins: { eth: 0 } },
+        buyCurrencySuccess(payload.data),
+      );
       expect(next.coins.eth).toEqual(payload.data.eth);
     });
     it("fill with data coins.usd filed", () => {
-      const next = wallet({ coins: { usd: 0 } }, buyCurrencySuccess(payload));
+      const next = wallet(
+        { coins: { usd: 0 } },
+        buyCurrencySuccess(payload.data),
+      );
       expect(next.coins.usd).toEqual(payload.data.usd);
     });
   });
@@ -97,19 +115,28 @@ describe("In wallet reducer", () => {
       data: {
         btc: 12,
         eth: 0.5,
-        usd: 10000
-      }
+        usd: 10000,
+      },
     };
     it("fill with data coins.btc filed", () => {
-      const next = wallet({ coins: { btc: 0 } }, sellCurrencySuccess(payload));
+      const next = wallet(
+        { coins: { btc: 0 } },
+        sellCurrencySuccess(payload.data),
+      );
       expect(next.coins.btc).toEqual(payload.data.btc);
     });
     it("fill with data coins.eth filed", () => {
-      const next = wallet({ coins: { eth: 0 } }, sellCurrencySuccess(payload));
+      const next = wallet(
+        { coins: { eth: 0 } },
+        sellCurrencySuccess(payload.data),
+      );
       expect(next.coins.eth).toEqual(payload.data.eth);
     });
     it("fill with data coins.usd filed", () => {
-      const next = wallet({ coins: { usd: 0 } }, sellCurrencySuccess(payload));
+      const next = wallet(
+        { coins: { usd: 0 } },
+        sellCurrencySuccess(payload.data),
+      );
       expect(next.coins.usd).toEqual(payload.data.usd);
     });
   });
