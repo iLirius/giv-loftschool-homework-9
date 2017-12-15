@@ -7,7 +7,7 @@ import {
 
 import { getWallet } from "../../api";
 
-function* onFetchWalletRequest() {
+export function* onFetchWalletRequest() {
   try {
     const data = yield call(getWallet);
     yield put(fetchWalletSuccess(data.data.result));

@@ -61,16 +61,16 @@ export const getBtcData = state => state.currency.btc;
 export const getEthData = state => state.currency.eth;
 
 export const getCurrentBtcPurchase = state =>
-  !state.currency.isEthLoading ? state.currency.btc[0].purchase : 0;
+  state.currency.isBtcLoading ? state.currency.btc[0].purchase : 0;
 
 export const getCurrentEthPurchase = state =>
-  !state.currency.isEthLoading ? state.currency.eth[0].purchase : 0;
+  state.currency.isEthLoading ? state.currency.eth[0].purchase : 0;
 
 export const getCurrentBtcSell = state =>
-  !state.currency.isEthLoading ? state.currency.btc[0].sell : 0;
+  state.currency.isBtcLoading ? state.currency.btc[0].sell : 0;
 
 export const getCurrentEthSell = state =>
-  !state.currency.isEthLoading ? state.currency.eth[0].sell : 0;
+  state.currency.isEthLoading ? state.currency.eth[0].sell : 0;
 
 export default combineReducers({
   selected,

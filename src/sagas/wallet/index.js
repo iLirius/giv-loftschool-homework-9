@@ -1,2 +1,1 @@
-export { fetchWalletWatch } from "./wallet";
-
+export { fetchWalletWatch, onFetchWalletRequest } from "./wallet";

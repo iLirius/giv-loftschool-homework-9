@@ -23,17 +23,17 @@ const {
     LOGIN: {
       REQUEST: [data => data, () => {}],
       SUCCESS: [data => data, () => {}],
-      FAILURE: undefined,
+      FAILURE: [data => data, () => {}],
     },
     REGISTRATION: {
       REQUEST: [data => data, () => {}],
       SUCCESS: [data => data, () => {}],
-      FAILURE: undefined,
+      FAILURE: [data => data, () => {}],
     },
     LOGOUT: {
       REQUEST: [data => data, () => {}],
       SUCCESS: [data => data, () => {}],
-      FAILURE: undefined,
+      FAILURE: [data => data, () => {}],
     },
   },
 });

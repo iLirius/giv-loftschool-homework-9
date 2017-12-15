@@ -5,7 +5,7 @@ import Particles from "react-particles-js";
 import particlesParams from "../../config/particles-params";
 
 import { authLoginRequest, authRegistrationRequest } from "../../actions/auth";
-import { getLoginError, getRegistationError } from "../../reducers/auth";
+import { getLoginError, getregistrationError } from "../../reducers/auth";
 
 import Logo from "../../assets/img/Logo.svg";
 import "./LoginForm.css";
@@ -50,7 +50,7 @@ export class LoginForm extends React.PureComponent {
   };
   render() {
     const { email, password, fromIsLogin } = this.state;
-    const { loginError, registationError } = this.props;
+    const { loginError, registrationError } = this.props;
 
     return (
       <div className="wraper">
@@ -85,7 +85,7 @@ export class LoginForm extends React.PureComponent {
                 required
               />
               <div className="login-form--errorMessage">
-                {loginError || (registationError && registationError.email)}
+                {loginError || (registrationError && registrationError.email)}
               </div>
               <Button
                 color="teal"
@@ -111,7 +111,7 @@ export class LoginForm extends React.PureComponent {
 
 const mapStateToProps = state => ({
   loginError: getLoginError(state),
-  registationError: getRegistationError(state),
+  registrationError: getregistrationError(state),
 });
 
 const mapDispatchToProps = {

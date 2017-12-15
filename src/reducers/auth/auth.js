@@ -4,43 +4,32 @@ import {
   handleActions,
 } from "redux-actions";
 import {
-  authLoginRequest,
   authLoginSuccess,
   authLoginFailure,
-  authRegistrationRequest,
-  // authRegistrationSuccess,
+  authRegistrationSuccess,
   authRegistrationFailure,
 } from "../../actions/auth";
 
-const initialState = null;
-
 export const isAuthorized = handleActions(
   {
-    [authLoginRequest]: () => false,
     [authLoginSuccess]: () => true,
-    [authLoginFailure]: () => false,
-    [authRegistrationRequest]: () => false,
-    [authRegistrationFailure]: () => false,
+    [authRegistrationSuccess]: () => true,
   },
   false,
 );
 export const loginError = handleActions(
   {
-    [authLoginRequest]: () => initialState,
-    [authLoginSuccess]: () => initialState,
     [authLoginFailure]: (state, action) => action.payload,
-    [authRegistrationRequest]: () => initialState,
-    [authRegistrationFailure]: () => initialState,
+    [authLoginSuccess]: () => null,
+    [authRegistrationSuccess]: () => null,
   },
   null,
 );
-export const registationError = handleActions(
+export const registrationError = handleActions(
   {
-    [authLoginRequest]: () => initialState,
-    [authLoginSuccess]: () => initialState,
-    [authLoginFailure]: () => initialState,
-    [authRegistrationRequest]: () => initialState,
+    [authLoginSuccess]: () => null,
     [authRegistrationFailure]: (state, action) => action.payload,
+    [authRegistrationSuccess]: () => null,
   },
   null,
 );
@@ -48,9 +37,9 @@ export const registationError = handleActions(
 export default combineReducers({
   isAuthorized,
   loginError,
-  registationError,
+  registrationError,
 });
 
 export const getIsAuthorized = state => state.auth.isAuthorized;
 export const getLoginError = state => state.auth.loginError;
-export const getRegistationError = state => state.auth.registationError;
+export const getregistrationError = state => state.auth.registrationError;
