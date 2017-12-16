@@ -1,5 +1,9 @@
 import { fork } from "redux-saga/effects";
-import { onAuthRequestsWatch } from "./auth";
+import {
+  authFlow,
+  onAuthLoginFlowWatch,
+  onAuthRegistrationFlowWatch,
+} from "./auth";
 import {
   currencyWatch,
   fetchBtcWatch,
@@ -10,7 +14,9 @@ import {
 import { fetchWalletWatch } from "./wallet";
 
 export default function*() {
-  yield fork(onAuthRequestsWatch);
+  yield fork(onAuthLoginFlowWatch);
+  yield fork(onAuthRegistrationFlowWatch);
+  yield fork(authFlow);
   yield fork(fetchBtcWatch);
   yield fork(fetchEthWatch);
   yield fork(currencyWatch);

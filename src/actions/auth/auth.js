@@ -12,11 +12,7 @@ const {
       success: authRegistrationSuccess,
       failure: authRegistrationFailure,
     },
-    logout: {
-      request: authLogoutRequest,
-      success: authLogoutSuccess,
-      failure: authLogoutFailure,
-    },
+    logout: authLogout,
   },
 } = createActions({
   AUTH: {
@@ -30,11 +26,7 @@ const {
       SUCCESS: [data => data, () => {}],
       FAILURE: [data => data, () => {}],
     },
-    LOGOUT: {
-      REQUEST: [data => data, () => {}],
-      SUCCESS: [data => data, () => {}],
-      FAILURE: [data => data, () => {}],
-    },
+    LOGOUT: undefined,
   },
 });
 
@@ -45,7 +37,5 @@ export {
   authRegistrationRequest,
   authRegistrationSuccess,
   authRegistrationFailure,
-  authLogoutRequest,
-  authLogoutSuccess,
-  authLogoutFailure,
+  authLogout,
 };

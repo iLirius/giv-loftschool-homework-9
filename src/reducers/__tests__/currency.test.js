@@ -24,13 +24,13 @@ describe("In currency reducer", () => {
       expect(next.selected).toEqual("eth");
     });
   });
-  // describe("action fetchCurrencyBtcRequest", () => {
-  //   it("change isBtcLoading from false to true", () => {
-  //     const next = currency({ isBtcLoading: false }, fetchCurrencyBtcRequest());
-  //     console.log(next);
-  //     expect(next.isBtcLoading).toBeTruthy();
-  //   });
-  // });
+  describe("action fetchCurrencyBtcRequest", () => {
+    // it("change isBtcLoading from false to true", () => {
+    //   const next = currency({ isBtcLoading: true }, fetchCurrencyBtcRequest());
+    //   console.log(next);
+    //   expect(next.isBtcLoading).toBeTruthy();
+    // });
+  });
   // describe("action fetchCurrencyEthRequest", () => {
   //   it("change isEthLoading from false to true", () => {
   //     const next = currency({ isEthLoading: false }, fetchCurrencyEthRequest());

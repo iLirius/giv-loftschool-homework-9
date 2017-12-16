@@ -5,7 +5,5 @@ export {
   authRegistrationRequest,
   authRegistrationSuccess,
   authRegistrationFailure,
-  authLogoutRequest,
-  authLogoutSuccess,
-  authLogoutFailure,
+  authLogout,
 } from "./auth";

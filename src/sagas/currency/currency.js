@@ -79,7 +79,7 @@ function* fetchEthFlow(action) {
   }
 }
 
-function* sellCurrencyFlow(action) {
+export function* sellCurrencyFlow(action) {
   try {
     const response = yield call(
       sellCurrency,
@@ -92,7 +92,7 @@ function* sellCurrencyFlow(action) {
   }
 }
 
-function* buyCurrencyFlow(action) {
+export function* buyCurrencyFlow(action) {
   try {
     const response = yield call(
       buyCurrency,
