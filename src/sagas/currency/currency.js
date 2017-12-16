@@ -8,7 +8,7 @@ import {
   call,
 } from "redux-saga/effects";
 import { delay } from "redux-saga";
-import { authLoginSuccess, authLogoutSuccess } from "../../actions/auth";
+import { authLoginSuccess, authLogout } from "../../actions/auth";
 import { getOffset } from "../../reducers/currency";
 import {
   selectBtc,
@@ -44,7 +44,7 @@ export function* currencyWatch() {
   while (true) {
     const action = yield take([
       authLoginSuccess,
-      authLogoutSuccess,
+      authLogout,
       selectBtc,
       selectEth,
       selectOffset,
@@ -54,7 +54,7 @@ export function* currencyWatch() {
       yield cancel(currencyTask);
       currencyTask = undefined;
     }
-    if (action.type !== authLogoutSuccess.toString()) {
+    if (action.type !== authLogout.toString()) {
       currencyTask = yield fork(fetchCurrencyFlow);
     }
     // yield delay(15000);

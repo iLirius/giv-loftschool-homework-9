@@ -1,4 +1,4 @@
-import { take, put, call, select, takeLatest, fork } from "redux-saga/effects";
+import { take, put, call, select, takeLatest } from "redux-saga/effects";
 import {
   authLoginRequest,
   authLoginSuccess,
