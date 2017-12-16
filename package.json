@@ -20,17 +20,16 @@
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.0.17",
+    "recompose": "^0.26.0",
     "redux": "^3.7.2",
     "redux-actions": "^2.2.1",
     "redux-saga": "^0.16.0",
     "semantic-ui-react": "^0.77.0",
-    "styled-components": "^2.2.4",
-    "recompose": "^0.26.0"
+    "styled-components": "^2.2.4"
   },
   "scripts": {
     "build-css": "node-sass-chokidar src/ -o src/",
-    "watch-css":
-      "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
+    "watch-css": "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
     "start-js": "react-scripts start",
     "start": "npm-run-all -p watch-css start-js",
     "build": "react-scripts build",
@@ -38,6 +37,7 @@
     "eject": "react-scripts eject"
   },
   "devDependencies": {
-    "eslint-plugin-prettier": "^2.3.1"
+    "eslint-plugin-prettier": "^2.3.1",
+    "prettier": "^1.9.2"
   }
 }
