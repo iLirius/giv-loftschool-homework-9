@@ -10,14 +10,14 @@ describe("In auth reducer", () => {
   describe("action authLoginRequest", () => {
     it("изменение isAuthorized", () => {
       const next = auth({ isAuthorized: false }, authLoginSuccess());
-      expect(next.isAthorized).toBeTruthy;
+      expect(next.isAuthorized).toBeTruthy();
     });
   });
 
   describe("action authRegistrationSuccess", () => {
     it("изменение isAuthorized", () => {
       const next = auth({ isAuthorized: false }, authRegistrationSuccess());
-      expect(next.isAthorized).toBeTruthy;
+      expect(next.isAuthorized).toBeTruthy();
     });
     it("clear loginError field", () => {
       const next = auth({ loginError: "error" }, authRegistrationSuccess());
