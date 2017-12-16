@@ -72,6 +72,55 @@ export const getCurrentBtcSell = state =>
 export const getCurrentEthSell = state =>
   state.currency.isEthLoading ? state.currency.eth[0].sell : 0;
 
+export const getMin = state => {
+  const { isBtcLoading, isEthLoading, selected } = state.currency;
+
+  if (isBtcLoading && isEthLoading) {
+    return state.currency[selected].reduce(
+      (acc, { sell, purchase }) => Math.min(acc, sell, purchase),
+      Number.MAX_SAFE_INTEGER,
+    );
+  }
+
+  return 0;
+};
+export const getMax = state => {
+  const { isBtcLoading, isEthLoading, selected } = state.currency;
+
+  if (isBtcLoading && isEthLoading) {
+    return state.currency[selected].reduce(
+      (acc, { sell, purchase }) => Math.max(acc, sell, purchase),
+      0,
+    );
+  }
+
+  return 0;
+};
+export const getSell = state => {
+  const { isBtcLoading, isEthLoading, selected } = state.currency;
+
+  if (isBtcLoading && isEthLoading) {
+    return state.currency[selected].map(item => [
+      new Date(item.mts),
+      item.sell,
+    ]);
+  }
+
+  return [];
+};
+export const getPurchase = state => {
+  const { isBtcLoading, isEthLoading, selected } = state.currency;
+
+  if (isBtcLoading && isEthLoading) {
+    return state.currency[selected].map(item => [
+      new Date(item.mts),
+      item.purchase,
+    ]);
+  }
+
+  return [];
+};
+
 export default combineReducers({
   selected,
   offset,

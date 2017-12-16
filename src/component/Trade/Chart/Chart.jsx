@@ -1,30 +1,30 @@
-import { compose, withHandlers, mapProps, pure } from "recompose";
+import { compose, mapProps, pure, withHandlers } from "recompose";
 import { connect } from "react-redux";
 import { Header, Loader, Dimmer, Segment } from "semantic-ui-react";
 import { LineChart } from "react-chartkick";
-import { withRouter } from "react-router-dom";
 import * as React from "react";
 import styled from "styled-components";
 import {
   getIsBtcLoading,
   getIsEthLoading,
   getOffset,
-  getBtcData,
-  getEthData,
-  getSelected,
+  getMin,
+  getMax,
+  getSell,
+  getPurchase,
 } from "../../../reducers/currency";
 import { selectOffset } from "../../../actions/currency";
 
 const enhance = compose(
-  withRouter,
   connect(
     state => ({
       isBtcLoading: getIsBtcLoading(state),
       isEthLoading: getIsEthLoading(state),
       offset: getOffset(state),
-      btc: getBtcData(state),
-      eth: getEthData(state),
-      currencyName: getSelected(state),
+      max: getMin(state),
+      min: getMax(state),
+      purchase: getPurchase(state),
+      sell: getSell(state),
     }),
     { selectOffset },
   ),
@@ -39,35 +39,21 @@ const enhance = compose(
       isEthLoading,
       selectOffset,
       offset,
-      btc,
-      eth,
       handleChangeOffset,
-      currencyName,
+      max,
+      min,
+      purchase,
+      sell,
     }) => ({
       isBtcLoading,
       isEthLoading,
       selectOffset,
       offset,
-      btc,
-      eth,
-      min: (currencyName === "btc" ? btc : eth).reduce(
-        (acc, { sell, purchase }) => Math.min(acc, sell, purchase),
-        Number.MAX_SAFE_INTEGER,
-      ),
-      max: (currencyName === "btc" ? btc : eth).reduce(
-        (acc, { sell, purchase }) => Math.max(acc, sell, purchase),
-        0,
-      ),
-      purchase: (currencyName === "btc" ? btc : eth).map(item => [
-        new Date(item.mts),
-        item.purchase,
-      ]),
-      sell: (currencyName === "btc" ? btc : eth).map(item => [
-        new Date(item.mts),
-        item.sell,
-      ]),
       handleChangeOffset,
-      currencyName,
+      max,
+      min,
+      purchase,
+      sell,
     }),
   ),
   pure,
@@ -121,11 +107,12 @@ const Chart = ({
         ))}
       </OffsetsSelector>
       <Segment style={{ width: "780px", height: "420px" }}>
-        {!isBtcLoading && !isEthLoading ? (
+        {(!isBtcLoading && !isEthLoading) === true && (
           <Dimmer active inverted>
             <Loader />
           </Dimmer>
-        ) : (
+        )}{" "}
+        {(isBtcLoading && isEthLoading) === true && (
           <LineChart
             data={[
               { name: "Продажа", data: sell },

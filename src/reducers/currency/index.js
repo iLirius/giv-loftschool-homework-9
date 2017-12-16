@@ -10,4 +10,8 @@ export {
   getCurrentEthSell,
   getCurrentBtcPurchase,
   getCurrentEthPurchase,
+  getMin,
+  getMax,
+  getSell,
+  getPurchase,
 } from "./currency";

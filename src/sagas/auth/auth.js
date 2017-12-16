@@ -41,16 +41,22 @@ export function* authFlow() {
 
 export function* onAuthLoginFlow(action) {
   try {
-    yield call(login, action.payload);
+    const data = yield call(login, action.payload);
+
     yield put(authLoginSuccess());
+    yield call(setTokenApi, data.data.jwt);
+    yield call(setTokenToLocalStorage, data.data.jwt);
   } catch (error) {
     yield put(authLoginFailure(error.data.message));
   }
 }
 export function* onAuthRegistrationFlow(action) {
   try {
-    yield call(registration, action.payload);
+    const data = yield call(registration, action.payload);
+
     yield put(authRegistrationSuccess());
+    yield call(setTokenApi, data.data.jwt);
+    yield call(setTokenToLocalStorage, data.data.jwt);
   } catch (error) {
     yield put(authRegistrationFailure(error.data.message));
   }
